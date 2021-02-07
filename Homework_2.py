@@ -1,33 +1,45 @@
 file = "WorldSeries.txt"
 
-def open_file():
-    return open(file, 'r')
-def make_dict(file_object):
-    champ_dict = {}
-    line = file_object.readline().rstrip('\n')
-    for i in range(1903, 2009):
-        champ_dict[i] = line
-        line = file_object.readline().rstrip('\n')
-    #print(champ_dict, '\n')
-    numb_dict = {}
-    for i in range(1903, 2009):
-        team = champ_dict[i]
-        if not team in numb_dict:
-            numb_dict[team] = 1
-        else:
-            numb_dict[team] += 1
-    #print(numb_dict, '\n')
-    return champ_dict, numb_dict
+def main():
 
-def get_prompt(champ_dict, numb_dict):
+    input_file = open_file() 
+    team_dict, win_count_dict = make_dict(input_file)
+    get_prompt(team_dict, win_count_dict) 
+
+def open_file():
+    input_file = open(file, 'r')
+    return input_file
+    
+def make_dict(input_file):
+    team_dict = {}
+    line = input_file.readline().rstrip('\n')
+    for i in range(1903, 2009):
+        if i != 1904 and i != 1994:
+            team_dict[i] = line
+            line = input_file.readline().rstrip('\n')
+        
+    print(team_dict, '\n')
+    win_count_dict = {}
+    for i in range(1903, 2009):
+        if i != 1904 and i != 1994:
+            team = team_dict[i]
+            if not team in win_count_dict:
+                win_count_dict[team] = 1
+            else:
+                win_count_dict[team] += 1
+    print(win_count_dict, '\n')
+    return team_dict, win_count_dict
+
+def get_prompt(team_dict, win_count_dict):
 
     valid = True
     while valid:
         try:
             year = int(input('Enter a year in the range from 1903 to 2008 to '
                              'know which team won World Series in the year: '))
-            if year > 1902 and year < 2008 and year != 1904 and year != 1994:
-                print(champ_dict[year], 'won in the year!',numb_dict[champ_dict[year]], 'times')
+            if year > 1903 and year < 2008 and year != 1904 and year != 1994:
+                print('The winning team in', year, 'was the', team_dict[year] + '.')
+                print('The', team_dict[year], 'won', win_count_dict[team_dict[year]], 'times between 1903 and 2008.')
                 valid = False
             elif year == 1904:
                 print('World Series Not Played in 1904')
@@ -35,13 +47,11 @@ def get_prompt(champ_dict, numb_dict):
             elif year == 1994:
                 print('World Series Not Played in 1994')
                 valid = False
+            elif year < 1903 or year > 2008:
+                print('No records found')
+                valid = False
         except:
-            print('Enter a year in integer.')
+           print('Enter a year in integer.')
     
-def main():
-
-    file_object = open_file() 
-    champ_dict, numb_dict = make_dict(file_object)
-    get_prompt(champ_dict, numb_dict) 
 
 main()
