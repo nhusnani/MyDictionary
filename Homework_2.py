@@ -1,4 +1,4 @@
-file = "WorldSeries.txt"
+file = "WorldSeriesWinners.txt"
 
 def main():
 
